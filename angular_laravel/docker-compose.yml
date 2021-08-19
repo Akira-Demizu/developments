@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  node:
+    image: node:16.6.2
+    working_dir: /projects
+    ports:
+      - 4200:4200
+    volumes:
+      - ./front:/projects:cached
+    tty: true
+  #    command: bash -c "npm cache clean -f && npm install && npm start"
+
+  php:
+    build: ./docker/php
+    volumes:
+      - ./back:/var/www:cached
+
+  nginx:
+    image: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./back:/var/www:cached
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:cached
+    depends_on:
+      - php
+
+  mysql:
+    build: ./docker/mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sample
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: on-failure
+    volumes:
+      - mysqldb:/var/lib/mysql:cached
+    ports:
+      - 3306:3306
+
+volumes:
+  mysqldb:
