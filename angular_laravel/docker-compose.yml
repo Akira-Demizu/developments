@@ -9,7 +9,7 @@ services:
     volumes:
       - ./front:/projects:cached
     tty: true
-  #    command: bash -c "npm cache clean -f && npm install && npm start"
+    command: bash -c "npm cache clean -f && npm install && npm start"
 
   php:
     build: ./docker/php
