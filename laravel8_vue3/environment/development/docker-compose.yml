@@ -13,10 +13,10 @@ services:
     volumes:
       - ./../../server:/project:cached
     tty: true
-#    command: bash -c "
-#      npm install;
-#      npm run watch;
-#      "
+    command: bash -c "
+      npm install;
+      npm run watch;
+      "
 
   nginx:
     image: nginx
