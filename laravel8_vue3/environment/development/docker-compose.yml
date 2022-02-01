@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  php:
+    container_name: php
+    build: docker/php
+    volumes:
+      - ./../../server:/var/www:cached
+
+  node:
+    container_name: node
+    build: docker/node
+    volumes:
+      - ./../../server:/project:cached
+    tty: true
+#    command: bash -c "
+#      npm install;
+#      npm run watch;
+#      "
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./../../server:/var/www:cached
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:cached
+    depends_on:
+      - php
+      - node
+
+  mysql:
+    build: docker/mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sample
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: on-failure
+    volumes:
+      - mysql:/var/lib/mysql:cached
+      - ./docker/mysql/sql:/docker-entrypoint-initdb.d:cached
+    ports:
+      - 3306:3306
+
+volumes:
+  mysql:
