@@ -4,7 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laravel</title>
-    <script src="{{ asset('js/app.js') }}" defer="defer"></script>
+    @if(config('app.env') === 'production')
+        <link href="{{ asset('css/app.min.css') }}" rel="stylesheet"/>
+        <script src="{{ asset('js/app.min.js') }}"></script>
+    @else
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
+        <script src="{{ asset('js/app.js') }}"></script>
+    @endif
 </head>
 <body>
 <div id="app">
