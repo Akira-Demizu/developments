@@ -11,7 +11,16 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]).vue();
+if (mix.inProduction()) {
+    mix.js('resources/js/app.js', 'public/js/app.min.js')
+        .postCss('resources/css/app.css', 'public/css/app.min.css', [
+            //
+        ]);
+} else {
+    mix.js('resources/js/app.js', 'public/js/app.js')
+        .postCss('resources/css/app.css', 'public/css/app.css', [
+            //
+        ]).sourceMaps();
+}
+
+mix.vue();
