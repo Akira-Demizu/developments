@@ -6,10 +6,10 @@
     <title>Laravel</title>
     @if(config('app.env') === 'production')
         <link href="{{ asset('css/app.min.css') }}" rel="stylesheet"/>
-        <script src="{{ asset('js/app.min.js') }}"></script>
+        <script src="{{ asset('js/app.min.js') }}" defer="defer"></script>
     @else
         <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
-        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/app.js') }}" defer="defer"></script>
     @endif
 </head>
 <body>
