@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  nuxt:
+    container_name: nuxt
+    build: docker/nuxt
+    volumes:
+      - ./front:/app:cached
+    ports:
+      - "80:3000"
+      - "24678:24678"
+    tty: true
+    environment:
+      - HOST=0.0.0.0
+      - port=80
+      - CHOKIDAR_USEPOLLING=true
+    command: sh -c "yarn && yarn dev"
